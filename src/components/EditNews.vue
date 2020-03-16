@@ -49,7 +49,7 @@ export default {
       },
       news: {
         title: '',
-        context: content,
+        context: '',
         ref: '',
         introduce: ''
       }
@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     language () {
-      return this.languageTypeList['zh']
+      return this.languageTypeList['en']
     }
   },
   methods: {
@@ -66,15 +66,13 @@ export default {
       console.log(this.html)
     } */
     init () {
-      this.content = `
-        **基于 tui-editor 实现的 markdown 编辑器**
-        ### 开始编辑新闻内容
-        `
+      this.content1 = content
       this.news.title = ''
       this.news.ref = ''
       this.news.introduce = ''
     },
     handleNews () {
+      this.news.context = this.content1
       if (this.news.title && this.news.context && this.news.ref && this.news.introduce) {
         axios.post('/mgr/api/news/', this.news)
           .then((response) => {
