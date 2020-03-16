@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="app-container">
     <el-form ref="news" :model="news" label-width="120px">
       <el-form-item label="新闻标题">
@@ -8,8 +8,10 @@
         <el-input class="item" v-model="news.ref" />
         <el-button type="primary" class="submit-button" @click="handleNews">提交</el-button>
       </el-form-item>
-      <el-form-item label="新闻内容">
+      <el-form-item label="新闻导语">
+        <textarea class="text-area" v-model="news.introduce" />
       </el-form-item>
+      <el-form-item label="新闻内容"/>
     </el-form>
 
     <div class="editor-container">
@@ -48,13 +50,14 @@ export default {
       news: {
         title: '',
         context: content,
-        ref: ''
+        ref: '',
+        introduce: ''
       }
     }
   },
   computed: {
     language () {
-      return this.languageTypeList['en']
+      return this.languageTypeList['zh']
     }
   },
   methods: {
@@ -69,9 +72,10 @@ export default {
         `
       this.news.title = ''
       this.news.ref = ''
+      this.news.introduce = ''
     },
     handleNews () {
-      if (this.news.title && this.news.content && this.news.ref) {
+      if (this.news.title && this.news.context && this.news.ref && this.news.introduce) {
         axios.post('/mgr/api/news/', this.news)
           .then((response) => {
             window.console.log(response)
@@ -92,7 +96,7 @@ export default {
           }).catch(error => console.log(error))
       } else {
         Message({
-          message: '请完整输入新闻标题、来源和内容',
+          message: '请完整输入新闻标题、来源、导语和内容',
           type: 'error',
           duration: 3 * 1000
         })
@@ -111,5 +115,9 @@ export default {
 }
 .item {
   width: 60%;
+}
+.text-area {
+  width: 80%;
+  height: 80px;
 }
 </style>
